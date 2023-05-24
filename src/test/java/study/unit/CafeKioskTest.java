@@ -2,11 +2,14 @@ package study.unit;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import study.unit.beverage.Americano;
 import study.unit.beverage.Latte;
+import study.unit.order.Order;
 
 class CafeKioskTest {
 
@@ -82,5 +85,46 @@ class CafeKioskTest {
 		cafeKiosk.removeBeverage(latte);
 
 		assertThat(cafeKiosk.getBeverageList()).isEmpty();
+	}
+
+	// 과연 이 테스트가 항상 성공하는 테스트일까?
+	// 주문 시간 범위 내에 해당 테스트를 실행하지 않는 경우, 테스트에 실패하게 된다.
+	// createOrder메서드는 테스트하기 어려운 코드
+	@Test
+	@DisplayName("테스트하기 어려운 영역을 분리하기 전의 테스트 코드")
+	void createOrder(){
+		CafeKiosk cafeKiosk = new CafeKiosk();
+		Americano americano = new Americano();
+		cafeKiosk.addBeverage(americano);
+
+		Order order = cafeKiosk.createOrder();
+
+		assertThat(order.getBeverageList()).hasSize(1);
+		assertThat(order.getBeverageList().get(0).getName()).isEqualTo("아메리카노");
+	}
+
+	@Test
+	@DisplayName("테스트하기 어려운 영역을 분리한 후의 테스트 코드 (해피 케이스)")
+	void createOrderInTimeWithCurrentTime(){
+		CafeKiosk cafeKiosk = new CafeKiosk();
+		Americano americano = new Americano();
+		cafeKiosk.addBeverage(americano);
+
+		Order order = cafeKiosk.createOrder(LocalDateTime.of(2023,05,24,10,0));
+
+		assertThat(order.getBeverageList()).hasSize(1);
+		assertThat(order.getBeverageList().get(0).getName()).isEqualTo("아메리카노");
+	}
+
+	@Test
+	@DisplayName("테스트하기 어려운 영역을 분리한 후의 테스트 코드 (예외 케이스)")
+	void createOrderOutTimeWithCurrentTime(){
+		CafeKiosk cafeKiosk = new CafeKiosk();
+		Americano americano = new Americano();
+		cafeKiosk.addBeverage(americano);
+
+		assertThatThrownBy(() -> cafeKiosk.createOrder(LocalDateTime.of(2023,05,24,22,1)))
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("주문 시간이 아닙니다. 관리자에게 문의하세요.");
 	}
 }

@@ -4,6 +4,7 @@
 ### 1. [테스트 코드는 왜 필요한가? (2023-05-21)](#테스트-코드는-왜-필요한가)
 ### 2. [수동 테스트 VS 자동화된 테스트 (2023-05-23)](#수동-테스트-vs-자동화-된-테스트)
 ### 3. [테스트 케이스 세분화 하기 (2023-05-23)](#테스트-케이스-세분화-하기)
+### 4. [테스트하기 어려운 영역을 분리하기 (2023-05-24)](#테스트하기-어려운-영역을-분리하기)
 
 <br>
 <br>
@@ -164,3 +165,247 @@ spring-boot-starter-test 의존성에 JUnit5와 AssertJ, Mockito 등이 포함�
    ⇒ 변수 x의 값을 경계값과 가까운 수(2)로 설정하여 테스트  
    ⇒ 경계값과 먼 수로 설정하여 테스트하는 것은 큰 효용성이 없기 때문이다.  
    ```
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+## 테스트하기 어려운 영역을 분리하기
+
+<br>
+<br>
+
+학습 목표 :
+
+- 테스트 할 때마다 <span style="color:orange"> 다른 값에 의존하는 코드 </span> 를 구분하고, 분리하는 방법을 익힌다.
+- 실행 시점에 따라 테스트의 결과가 달라지는 코드에서, 실행 시점에 의존하지 않는 코드로 변경한다.
+- 실행 시점을 특정하여, 실행 시점에 따라 해피 케이스와 예외 케이스를 분리하고,
+  경계값 테스트를 통해 로직을 검증하는 테스트 코드를 작성한다.
+
+<br>
+<br>
+
+---
+<br>
+
+
+## 테스트 하기 어려운 코드/ 쉬운 코드
+
+### `테스트 하기 어려운 코드란`
+
+<br>
+
+1.  **테스트 할 때마다 <span style="color:orange; font-weight:bold"> 다른 값에 의존하는 </span> 코드**
+
+즉, 외부 세계에서 들어오는 값이 테스트 대상에 의존하는 경우를 말한다.  
+
+( Ex: 현재 날짜 / 시간, 랜덤 값, 전역 변수/함수, 사용자 입력 등)  
+
+<br>
+
+2. **외부 세계에 <span style="color:orange; font-weight:bold">  영향을 주는 </span> 코드**
+
+테스트 대상이 외부 세계에 영향을 주고, 따라서, 그것에 의존에 있는 코드
+
+(Ex: 표준 출력, 메시지 발송, 데이터베이스 조작 등)
+
+<br>
+
+### **`테스트 하기 쉬운 코드란`**
+<br>
+
+테스트 하기 쉬운 코드란 <span style="color:green; font-weight:bold"> 같은 입력에 항상 같은 결과를 반환 </span> 하는 코드이다.  
+
+즉, 외부 세계와 단절된 형태
+
+<br>
+<br>
+<br>
+
+좋은 테스트 코드를 작성하기 위해서는 테스트 하기 어려운 코드와 쉬운 코드를 구분하고,
+분리할 수 있어야 한다.
+
+<br>
+<br>
+
+---
+<br>
+
+
+## 테스트 하기 쉬운 코드 연습
+
+<br>
+<br>
+
+### 📌 실행 시점이 다르다고, 테스트에 실패하지 않기  
+
+<br>
+
+
+다음 코드는
+주문 요청이 들어온 시간이 주문 가능한 시간인 경우, Order 객체를 생성하여 반환하고,
+그렇지 않은 경우, 예외를 던지는 기능을 제공하는 코드이다.
+
+```java
+@Getter
+public class CafeKiosk {
+
+	private static final LocalTime SHOP_OPEN_TIME = LocalTime.of(10,0);
+	private static final LocalTime SHOP_CLOSE_TIME = LocalTime.of(22,0);
+
+	private final List<Beverage> beverageList = new LinkedList<>();
+
+	public void addBeverage(Beverage beverage, int count) {
+			 ...
+		}
+	}
+
+	public void addBeverage(Beverage beverage) {
+		...
+	}
+
+	public void removeBeverage(Beverage beverage){
+		...
+	}
+
+	public Order createOrder(){
+		LocalDateTime now = LocalDateTime.now();
+		LocalTime currentTime = now.toLocalTime();
+
+		if (currentTime.isBefore(SHOP_OPEN_TIME) || currentTime.isAfter(SHOP_OPEN_TIME)) {
+			throw new IllegalArgumentException("주문 시간이 아닙니다. 관리자에게 문의하세요.");
+		}
+
+		return new Order(now, beverageList);
+	}
+}
+```
+
+
+<br>
+<br>
+
+이 기능의 검증을 위한 테스트 코드는 다음과 같다.
+
+```java
+@Test
+	@DisplayName("테스트하기 어려운 영역을 분리하기 전의 테스트 코드")
+	void createOrder(){
+		CafeKiosk cafeKiosk = new CafeKiosk();
+		Americano americano = new Americano();
+		cafeKiosk.addBeverage(americano);
+
+		Order order = cafeKiosk.createOrder();
+
+		assertThat(order.getBeverageList()).hasSize(1);
+		assertThat(order.getBeverageList().get(0).getName()).isEqualTo("아메리카노");
+	}
+```
+
+<br>
+<br>
+이 테스트 코드는 실행 시점에 따라, 테스트 결과가 달라지는 코드이다.
+
+<br>
+
+주문 가능한 시간인 오전 10시와 오후 10시 사이에 테스트를 실행하면 테스트에 성공하지만,
+
+이외의 시간에 테스트를 실행하면 `createOrder()` 메서드는 예외를 던지므로 테스트에 실패한다.
+
+<br>
+<br>
+
+즉, `createOrder()` 메서드는 테스트 하기 어려운 코드이다.
+
+따라서, `createOrder()` 메서드에서 테스트 하기 어려운 영역을 구분하고, 분리하여
+
+테스트 하기 쉬운 코드로 설계를 변경하는 것이 중요하다.
+
+<br>
+<br>
+
+지금의 `createOrder()` 메서드는 메서드 내부에서 현재 시간을 받아 처리하고 있다.
+
+테스트를 어렵게 만드는 영역(메서드 내부에서 LocalDateTime.now()를 통해 현재 시간을 받는 영역)
+을 구분했으니, 이 영역을 분리하기 위해 현재 시간을 함수 외부에서 받도록 `createOrder()` 메서드를 재 설계 해보자.
+
+<br>
+<br>
+
+테스트 하기 어려운 영역을 분리한 `createOrder()` 메서드는 다음과 같다.
+
+```java
+
+	public Order createOrder(LocalDateTime now){
+		LocalTime currentTime = now.toLocalTime();
+		if (currentTime.isBefore(SHOP_OPEN_TIME) || currentTime.isAfter(SHOP_OPEN_TIME)) {
+			throw new IllegalArgumentException("주문 시간이 아닙니다. 관리자에게 문의하세요.");
+		}
+
+		return new Order(now, beverageList);
+	}
+```
+
+<br>
+<br>
+
+이 기능의 검증을 위한 테스트 코드는 다음과 같다.
+
+```java
+@Test
+	@DisplayName("테스트하기 어려운 영역을 분리한 후의 테스트 코드 (해피 케이스)")
+	void createOrderInTimeWithCurrentTime(){
+		CafeKiosk cafeKiosk = new CafeKiosk();
+		Americano americano = new Americano();
+		cafeKiosk.addBeverage(americano);
+
+		Order order = cafeKiosk.createOrder(LocalDateTime.of(2023,05,24,10,0));
+
+		assertThat(order.getBeverageList()).hasSize(1);
+		assertThat(order.getBeverageList().get(0).getName()).isEqualTo("아메리카노");
+	}
+
+	@Test
+	@DisplayName("테스트하기 어려운 영역을 분리한 후의 테스트 코드 (예외 케이스)")
+	void createOrderOutTimeWithCurrentTime(){
+		CafeKiosk cafeKiosk = new CafeKiosk();
+		Americano americano = new Americano();
+		cafeKiosk.addBeverage(americano);
+
+		assertThatThrownBy(() -> cafeKiosk.createOrder(LocalDateTime.of(2023,05,24,22,1)))
+			.isInstanceOf(IllegalArgumentException.class)
+			.hasMessage("주문 시간이 아닙니다. 관리자에게 문의하세요.");
+	}
+```
+
+<br>
+<br>
+
+재 설계한 `createOrder()` 메서드는 실행 시점에 의존하고 있지 않기 때문에,
+실행 시점에 따라 해피 케이스와 예외 케이스를 분리하고, 경계값 테스트를 통해
+임의의 시간이 주어졌을 때 내가 짠 코드가 의도한대로 동작하는지 검증하는 것이 가능해졌다!
+
+<br>
+<br>
+
+테스트 과정에 있어서는, 현재 테스트를 실행하고 있는 시간이 중요한 것이 아니라,
+임의의 시간이 주어졌을 때, 내가 작성한 로직이 정상적으로 동작하는지 검증하는 것이 중요하다.
+
+
+<br>
+<br>
+
+따라서, 테스트 코드 상에서 외부에서 들어오는 값에 의존하지 않고,
+해피 케이스 / 예외 케이스에 따라 원하는 값을 넣어 테스트할 수 있도록 설계를 변경하는 것이 중요하다.
+
+<br>
+<br>
+<span style="background-color:#fff5b1"> 테스트 하기 어려운 영역을 외부로 분리할 수록 테스트 가능한 코드는 많아진다. </span>
+

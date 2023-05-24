@@ -1,6 +1,7 @@
 package study.unit;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +10,9 @@ import study.unit.order.Order;
 
 @Getter
 public class CafeKiosk {
+
+	private static final LocalTime SHOP_OPEN_TIME = LocalTime.of(10,0);
+	private static final LocalTime SHOP_CLOSE_TIME = LocalTime.of(22,0);
 
 	private final List<Beverage> beverageList = new LinkedList<>();
 
@@ -20,6 +24,10 @@ public class CafeKiosk {
 		for (int i = 0; i < count; i++) {
 			beverageList.add(beverage);
 		}
+	}
+
+	public void addBeverage(Beverage beverage) {
+		beverageList.add(beverage);
 	}
 
 	public void removeBeverage(Beverage beverage){
@@ -39,6 +47,23 @@ public class CafeKiosk {
 	}
 
 	public Order createOrder(){
-		return new Order(LocalDateTime.now(), beverageList);
+		LocalDateTime now = LocalDateTime.now();
+		LocalTime currentTime = now.toLocalTime();
+
+		if (currentTime.isBefore(SHOP_OPEN_TIME) || currentTime.isAfter(SHOP_OPEN_TIME)) {
+			throw new IllegalArgumentException("주문 시간이 아닙니다. 관리자에게 문의하세요.");
+		}
+
+		return new Order(now, beverageList);
+	}
+
+	// createOrder 메서드를 테스트하기 좋은 코드로 리팩토링
+	public Order createOrder(LocalDateTime now){
+		LocalTime currentTime = now.toLocalTime();
+		if (currentTime.isBefore(SHOP_OPEN_TIME) || currentTime.isAfter(SHOP_OPEN_TIME)) {
+			throw new IllegalArgumentException("주문 시간이 아닙니다. 관리자에게 문의하세요.");
+		}
+
+		return new Order(now, beverageList);
 	}
 }
