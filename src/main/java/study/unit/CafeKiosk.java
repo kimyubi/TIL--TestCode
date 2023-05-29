@@ -38,15 +38,6 @@ public class CafeKiosk {
 		beverageList.clear();
 	}
 
-	// TDD로
-	// public int calculateTotalPrice() {
-	// 	int totalPrice = 0;
-	// 	for (Beverage beverage : beverageList){
-	// 		totalPrice += beverage.getPrice();
-	// 	}
-	// 	return totalPrice;
-	// }
-
 	public Order createOrder(){
 		LocalDateTime now = LocalDateTime.now();
 		LocalTime currentTime = now.toLocalTime();
