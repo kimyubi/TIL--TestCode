@@ -127,4 +127,19 @@ class CafeKioskTest {
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("주문 시간이 아닙니다. 관리자에게 문의하세요.");
 	}
+
+	@Test
+	@DisplayName("키오스크에 담긴 음료 가격의 총합 계산")
+	void calculateTotalPrice(){
+		CafeKiosk cafeKiosk = new CafeKiosk();
+
+		Americano americano = new Americano();
+		Latte latte = new Latte();
+		cafeKiosk.addBeverage(americano);
+		cafeKiosk.addBeverage(latte);
+
+		int totalPrice = cafeKiosk.calculateTotalPrice();
+		assertThat(totalPrice).isEqualTo(8500);
+	}
+
 }
