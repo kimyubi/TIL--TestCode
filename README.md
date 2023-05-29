@@ -447,7 +447,9 @@ public class CafeKiosk {
 
 - **REFACTOR :** 테스트 통과를 유지하며, 구현 코드를 개선한다.
 
----
+<br>
+<br>
+<br>
 
 ## TDD 실습
 
@@ -462,7 +464,6 @@ public class CafeKiosk {
 
 4. [[TDD 3단계] REFACTORING : 기능을 보장하는 테스트 코드가 있으므로, 테스트 통과를 유지하며 과감한 리팩토링을 시도해볼 수 있다.](https://github.com/kimyubi/TIL--TestCode/commit/5a75f4c37bb7df1cf207643168697b5cf51da74a)
 
----
 <br>
 <br>
 
@@ -497,5 +498,7 @@ public class CafeKiosk {
 
 ![img_2.png](img_2.png)
 
+<br>
+<br>
 
-### TDD란 ⇒  **클라이언트 관점에서의** 피드백**을 주는 Test Driven**
+### TDD란 ⇒  ***클라이언트 관점에서의 **피드백**을 주는 Test Driven***
