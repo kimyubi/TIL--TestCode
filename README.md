@@ -631,10 +631,16 @@ public class CafeKiosk {
 <br>
 
 ## Persistence Layer 테스트
+<br>
+<br>
+<br>
 
 ## Layered Architecture **⇒ 관심사의 분리**
 
 ![img_3.png](img_3.png)
+
+<br>
+<br>
 <br>
 
 ## ✅ 통합 테스트
@@ -643,9 +649,12 @@ public class CafeKiosk {
 - 일반적으로 작은 범위의 단위 테스트 만으로는 **기능 전체의 신뢰성**을 보장할 수 없다.
 - 풍부한 단위 테스트 & 큰 기능 단위를 검증하는 통합 테스트
 
-## Persistence Layer Test
+<br>
+<br>
+<br>
 
----
+## Persistence Layer Test
+<br>
 
 ### ✅ Persistence Layer를 테스트 하는 테스트 코드는 왜 작성해야 할까?
 
@@ -656,14 +665,21 @@ public class CafeKiosk {
   ⇒ 이를 통해 실제 운영 환경에서 예상치 못한 문제가 발생할 가능성을 줄일 수 있다.
 
 **변경 사항 관리**
-애플리케이션의 요구 사항이나 데이터 구조는 언제든지 변경될 수 있다.
+애플리케이션의 요구 사항이나 데이터 구조는 언제든지 변경될 수 있다.  
 
-- Persistence Layer를 테스트하는 테스트 코드를 작성하면, 변경 사항에 따른 영향을 파악하고 새로운 요구 사항을 충족시키는지 확인할 수 있다.
+- Persistence Layer를 테스트하는 테스트 코드를 작성하면, 변경 사항에 따른 영향을 파악하고 새로운 요구 사항을 충족시키는지 확인할 수 있다.  
 
-  ⇒ 이를 통해 변경 사항이 기존 기능에 영향을 미치거나 예기치 않은 동작을 일으키는지 감지할 수 있다.
+  ⇒ 이를 통해 변경 사항이 기존 기능에 영향을 미치거나 예기치 않은 동작을 일으키는지 감지할 수 있다.  
 
+<br>
+<br>
 
-Persistence Layer Test 는 단위 테스트에 가까운 성격을 가지고 있다.
+#### ***Persistence Layer Test 는 단위 테스트에 가까운 성격을 가지고 있다.***
+
+<br>
+<br>
+<br>
+<br>
 
 ### ✅ Persistence Layer Test를 위한 어노테이션
 
@@ -674,6 +690,9 @@ Persistence Layer Test 는 단위 테스트에 가까운 성격을 가지고 있
 - 애플리케이션 컨텍스트를 로드하고 모든 빈을 생성하여 테스트 환경을 설정한다.
 - 일반적으로 스프링 애플리케이션의 전체적인 구성을 테스트하고 외부 종속성과의 통합을 확인하는 데 사용된다
 - @SpringBootTest 어노테이션을 사용하면 테스트에 필요한 모든 구성 요소를 로드하여 실제 환경과 유사한 테스트 환경을 만들 수 있다.
+
+<br>
+<br>
 
 ### @DataJpaTest
 
