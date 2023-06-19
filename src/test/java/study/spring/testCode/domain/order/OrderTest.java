@@ -19,13 +19,14 @@ class OrderTest {
 	@Test
 	void calculateTotalPrice(){
 	    //given
+		LocalDateTime now = LocalDateTime.now();
 		List<Product> products = List.of(
 			createProduct("001", 4000),
 			createProduct("002", 4500)
 		);
 
 		// when
-		Order order = Order.create(products, LocalDateTime.of(2023, 06, 01, 22, 03));
+		Order order = Order.create(products, now);
 
 	    // then
 		assertThat(order.getTotalPrice()).isEqualTo(8500);
@@ -35,13 +36,14 @@ class OrderTest {
 	@Test
 	void init(){
 		//given
+		LocalDateTime now = LocalDateTime.now();
 		List<Product> products = List.of(
 			createProduct("001", 4000),
 			createProduct("002", 4500)
 		);
 
 		// when
-		Order order = Order.create(products, LocalDateTime.of(2023, 06, 01, 22, 03));
+		Order order = Order.create(products, now);
 
 		// then
 		assertThat(order.getOrderStatus()).isEqualByComparingTo(OrderStatus.INIT);
@@ -51,7 +53,7 @@ class OrderTest {
 	@Test
 	void registerDateTime(){
 		//given
-		LocalDateTime registeredDateTime = LocalDateTime.of(2023, 06, 01, 22, 03);
+		LocalDateTime registeredDateTime = LocalDateTime.now();
 		List<Product> products = List.of(
 			createProduct("001", 4000),
 			createProduct("002", 4500)

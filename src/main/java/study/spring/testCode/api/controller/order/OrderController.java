@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import study.spring.testCode.api.controller.order.request.OrderCreateRequest;
 import study.spring.testCode.api.service.order.OrderService;
+import study.spring.testCode.api.service.order.response.OrderResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,9 +18,9 @@ public class OrderController {
 	private final OrderService orderService;
 
 	@PostMapping("/api/v1/orders/new")
-	public void createOrder(@RequestBody OrderCreateRequest request){
+	public OrderResponse createOrder(@RequestBody OrderCreateRequest request){
 		LocalDateTime registeredDateTime = LocalDateTime.now();
-		orderService.createOrder(request, registeredDateTime);
+		return orderService.createOrder(request, registeredDateTime);
 	}
 
 }

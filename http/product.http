@@ -1,0 +1,3 @@
+### 판매 중인 상품 조회
+GET localhost:8081/api/v1/products/selling
+Content-Type: application/json
