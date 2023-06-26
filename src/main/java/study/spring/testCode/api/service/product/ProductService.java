@@ -32,7 +32,7 @@ public class ProductService {
 
 
 	@Transactional
-	public ProductResponse createProduct(ProductCreateRequest request) {
+	public ProductResponse createProduct(ProductCreateServiceRequest request) {
 		String latestProductNumber = productRepository.findLatestProductNumber();
 		String newProductNumber = createNewProductNumber(latestProductNumber);
 		Product newProduct = request.toEntity(newProductNumber);

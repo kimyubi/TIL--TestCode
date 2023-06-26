@@ -45,7 +45,7 @@ class ProductServiceTest {
 		ProductCreateRequest request = ProductCreateRequest.of(HANDMADE, SELLING, "딸기 우유", 7500);
 
 	    // when
-		ProductResponse productResponse = productService.createProduct(request);
+		ProductResponse productResponse = productService.createProduct(request.toServiceRequest());
 
 		// then
 		assertThat(productResponse)
@@ -70,7 +70,7 @@ class ProductServiceTest {
 		ProductCreateRequest request = ProductCreateRequest.of(HANDMADE, SELLING, "딸기 우유", 7500);
 
 		// when
-		ProductResponse productResponse = productService.createProduct(request);
+		ProductResponse productResponse = productService.createProduct(request.toServiceRequest());
 
 		// then
 		assertThat(productResponse)

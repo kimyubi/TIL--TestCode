@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import study.spring.testCode.OrderRepository;
 import study.spring.testCode.ProductRepository;
 import study.spring.testCode.api.controller.order.request.OrderCreateRequest;
+import study.spring.testCode.api.service.order.request.OrderCreateServiceRequest;
 import study.spring.testCode.api.service.order.response.OrderResponse;
 import study.spring.testCode.domain.order.Order;
 import study.spring.testCode.domain.product.Product;
@@ -30,7 +31,7 @@ public class OrderService {
 
 	private final StockRepository stockRepository;
 
-	public OrderResponse createOrder(OrderCreateRequest request, LocalDateTime registeredDateTime) {
+	public OrderResponse createOrder(OrderCreateServiceRequest request, LocalDateTime registeredDateTime) {
 		List<String> productNumbers = request.getProductNumbers();
 		List<Product> products = findProductBy(productNumbers);
 
