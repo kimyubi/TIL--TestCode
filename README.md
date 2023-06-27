@@ -8,7 +8,7 @@
 ### 5. [TDD란 (2023-05-29)](#tdd란)
 ### 6. [문서로서의 테스트 코드 (2023-05-29)](#문서로서의-테스트-코드)
 ### 7. [Persistence Layer 테스트 (2023-06-01)](#persistence-layer-테스트)
-### 8. [Test Double, Stubbing (2023-06-27)](#test-double,-stubbing)
+### 8. [Test Double, Stubbing (2023-06-27)](#test-double)
  
 <br>
 <br>
@@ -609,7 +609,7 @@ public class CafeKiosk {
 <br>
 <br>
 
----
+=================================
 
 <br>
 <br>
@@ -713,7 +713,7 @@ JPA 기반의 Persistence Layer를 테스트하는 데 사용된다.
 
 
 
-## test double, stubbing
+## test double
 
 - `Dummy` : 아무 것도 하지 않는 깡통 객체  
 - `Fake` : 단순한 형태로 동일한 기능은 수행하나, 프로덕션에서 쓰기에는 부족한 객체  
