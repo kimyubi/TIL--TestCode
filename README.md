@@ -9,6 +9,7 @@
 ### 6. [문서로서의 테스트 코드 (2023-05-29)](#문서로서의-테스트-코드)
 ### 7. [Persistence Layer 테스트 (2023-06-01)](#persistence-layer-테스트)
 ### 8. [Test Double, Stubbing (2023-06-27)](#test-double)
+### 9. [더 나은 테스트를 작성하기 위한 팁 (2023-06-28)](#더-나은-테스트를-작성하기-위한-팁)
  
 <br>
 <br>
@@ -712,8 +713,7 @@ JPA 기반의 Persistence Layer를 테스트하는 데 사용된다.
 
 
 
-
-## test double
+# test double
 
 - `Dummy` : 아무 것도 하지 않는 깡통 객체  
 - `Fake` : 단순한 형태로 동일한 기능은 수행하나, 프로덕션에서 쓰기에는 부족한 객체  
@@ -748,3 +748,191 @@ Mock → 행위 검증(Behavior Verification)
 
 ‼ 외부 시스템에서 진행되는 동작은 Mocking 처리한다.  
 ![img_4.png](img_4.png))
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+
+# 더 나은 테스트를 작성하기 위한 팁
+
+### ✅ 한 문단에 한 주제
+
+- 하나의 테스트에서는 한 가지 목적의 검증만 수행한다.
+
+(⇒ DisplayName을 한 문장으로 치환할 수 있는가)
+
+(⇒ 분기문, 반복문 지양)
+
+---
+
+### ✅ 완벽하게 제어하기
+
+- 테스트를 하기 위한 환경을 조성할 때, 모든 조건을 완벽하게 제어할 수 있어야 한다.
+  (⇒ 테스트 할 때마다 다른 값에 의존하는 코드를 구분하고, 분리한다.)
+
+---
+
+### ✅ 테스트 환경의 독립성을 보장하자.
+
+- 테스트 환경 : 테스트 행위를 하기 위한 이전 준비 과정
+- 테스트 환경에서 다른 API를 사용하는 것을 지양하여 테스트 간 결합도가 생기는 것을 피하고, 독립성을 보장해야 한다.
+- 아래 예시는 createOrder 메서드를 테스트 하는 상황인데, 이와 관련이 없는 deductQuantity() 사용하고 있다.
+  ⇒  테스트 하려는 환경과 또 다른 맥락(deductQuantity())을 고려해야 한다.
+
+![img_5.png](img_5.png)
+---
+
+### ✅ 테스트 간 독립성을 보장하자.
+
+- 두 가지 이상의 테스트가 자원을 공유하지 않아야 한다.
+- 테스트 간 실행 순서에 따라 테스트의 성공/실패가 달라지면 안된다.
+
+  (⇒ 테스트의 실행 순서와 테스트의 결과는 무관해야 한다.)
+
+
+---
+
+### ✅ 한 눈에 들어오는 Test Fixture 구성하기
+
+- Fixture: 고정물, 고정되어 있는 물체
+- **`Test Fixture`** : 테스트를 위해 원하는 상태로 고정 시킨 일련의 객체
+  (= given 절에서 생성한 모든 객체들)
+- `@BeforeEach`, `@BeforeAll` 지양
+  ⇒ 테스트 간 결합도가 생겨 Test Fixture 수정 시 모든 테스트에 영향을 미치게 되는데,
+  이것이 어떤 결과를 불러올지 예상하기 힘들다.
+
+  ⇒ 각 테스트를 이해하기 위해 `@BeforeEach`, `@BeforeAll` 로 선언된 메소드와 테스트를
+  왔다 갔다 하면서 확인하게 된다. (문서로서의 테스트의 역할을 수행하기 어렵다.)
+
+  📌  `**@BeforeEach`, `@BeforeAll` 를 사용하기 전 고민해야 할 사항**
+
+    1. 각 테스트 입장에서 봤을 때, 아예 몰라도 테스트 내용을 이해하는 데에 문제가 없는가?
+    2. 수정해도 모든 테스트에 영항을 주지 않는가?
+
+  위 두 조건에 모두 만족하는 경우에만 `@BeforeEach`, `@BeforeAll` 를 사용한다.
+
+
+---
+
+### ✅ Test Fixture 클렌징
+
+`deleteAll` **VS** `deleteAllInBatch`
+
+- **deleteAllInBatch** (성능 Win🔆)
+  테이블의 전체 행을 한번에 삭제하는 메소드로, 연관 관계가 있는 테이블 간의 삭제 순서를 고려하지 않으면, 무결성 제약 조건에 위배된다.
+- **deleteAll**
+  테이블의 행을 하나씩 삭제한다. 이때, 연관 관계를 맺고 있는 행을 함께 삭제하긴 하지만, 테이블 간의 삭제 순서를 하지 않으면, 무결성 제약 조건에 위배된다.
+
+하지만, 행을 하나씩 삭제하므로 `deleteAllInBatch`에 의해 지우는 것보다 쿼리가 훨씬 많이 나간다. (select를 통해 연관 관계가 있는지 조회 + 테이블의 행을 각각 삭제)
+
+---
+
+### ✅ `@ParameterizedTest`
+
+**@ParameterizedTest**
+
+하나의 테스트를 값을 바꿔가면서 테스트를 하고 싶을 때 사용하는 JUnit 어노테이션
+
+⇒ 하나의 테스트 메소드로 여러 개의 파라미터에 대해서 테스트할 수 있다.
+
+- @ParameterizedTest를 사용하기 전의 코드
+
+    ```java
+    class ProductTypeTest {
+    
+    	@DisplayName("상품의 타입이 재고 관련 타입인지 확인한다.")
+    	@Test
+    	void containsStockType(){
+    	    //given
+    		ProductType givenType = ProductType.HANDMADE;
+    
+    		// when
+    		boolean result = ProductType.containsStockType(givenType);
+    
+    		// then
+    		assertThat(result).isFalse();
+    	}
+    
+    	@DisplayName("상품의 타입이 재고 관련 타입인지 확인한다.")
+    	@Test
+    	void containsStockType2(){
+    	    //given
+    		ProductType givenType = ProductType.BAKERY;
+    
+    		// when
+    		boolean result = ProductType.containsStockType(givenType);
+    
+    		// then
+    		assertThat(result).isTrue();
+    	}
+    }
+    ```
+
+- @ParameterizedTest를 사용한 코드
+
+    ```java
+    class ProductTypeTest {
+    	// @ParameterizedTest를 활용한 테스트
+    		@DisplayName("상품 타입이 재고 관련 타입인지를 체크한다.")
+    		@CsvSource({"HANDMADE, false", "BOTTLE, true", "BAKERY, true"})
+    		@ParameterizedTest
+    		void test(ProductType type, boolean expected){
+    		    // when
+    			boolean result = ProductType.containsStockType(type);
+    	
+    		    // then
+    			assertThat(result).isEqualTo(expected);
+    		}
+    }
+    ```
+
+
+---
+
+### ✅ `@DynamicTest`
+
+**@DynamicTest**
+
+> Runtime 중에 생성되는 동적 테스트이며, given 안에서 when이 연속적으로 이루어지는 형태를 가진다.
+>
+
+- Junit5부터 지원하며, **시나리오 테스트**라고 부르기도 한다.
+- 실제 서비스와 같은 흐름으로 테스트를 진행할 수 있다.
+
+---
+
+### ✅ 테스트 수행도 비용이다. 환경 통합하기
+
+```java
+@ActiveProfiles("test")
+@SpringBootTest
+public abstract class IntegrationTestSupport {
+}
+```
+
+위와 같은 환경에서 테스트하고자 하는 테스트 클래스에서 `IntegrationTestSupport`  클래스를 상속하여 사용한다.
+
+---
+
+### ✅ private 메서드의 테스트는 어떻게 하나요?
+
+private 메서드를 테스트하고 싶은 욕망이 생긴다면,  
+객체를 분리할 시점인가? 라는 질문을 던져보아야 한다.
+
+⇒ private 메서드를 테스트 할 필요가 없다.
+
+⇒ private 메서드를 호출하는 public 메서드를 테스트 하는 과정에서 private 메서드가 검증되기 때문이다.
+
+⇒ 그럼에도 private 메서드를 테스트하고 싶다는 생각이 강하게 든다면, 이는 private 메서드의 책임이 크다는 이야기이므로 별도의 객체로 분리해야 한다는 신호가 될 수 있다.
+
+---
+
+### ✅ 테스트에서만 필요한 메서드가 생겼는데 프로덕션 코드에서는 필요 없다면?
+
+만들어도 된다. 하지만 **보수적**으로 접근하기!
+
+⇒ 기본적으로는 테스트 코드에서만 사용하는 코드는 지양하는 것이 맞지만, 어떤 객체가 마땅히 가져도 되는 행위라고 생각이 들면서, 미래에도 충분히 사용될 수 있는 성격의 메서드는 만들어도 된다.
