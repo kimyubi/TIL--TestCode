@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import study.spring.testCode.ProductRepository;
-import study.spring.testCode.api.controller.product.dto.request.ProductCreateRequest;
+import study.spring.testCode.domain.product.ProductRepository;
 import study.spring.testCode.api.service.product.response.ProductResponse;
 import study.spring.testCode.domain.product.Product;
 import study.spring.testCode.domain.product.ProductSellingStatus;

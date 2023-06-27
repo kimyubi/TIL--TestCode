@@ -1,12 +1,9 @@
-package study.spring.testCode;
+package study.spring.testCode.domain.product;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import study.spring.testCode.domain.product.Product;
-import study.spring.testCode.domain.product.ProductSellingStatus;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 

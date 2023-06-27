@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import study.spring.testCode.OrderRepository;
-import study.spring.testCode.ProductRepository;
-import study.spring.testCode.api.controller.order.request.OrderCreateRequest;
+import study.spring.testCode.domain.order.OrderRepository;
+import study.spring.testCode.domain.product.ProductRepository;
 import study.spring.testCode.api.service.order.request.OrderCreateServiceRequest;
 import study.spring.testCode.api.service.order.response.OrderResponse;
 import study.spring.testCode.domain.order.Order;
@@ -28,7 +27,6 @@ public class OrderService {
 
 	private final OrderRepository orderRepository;
 	private final ProductRepository productRepository;
-
 	private final StockRepository stockRepository;
 
 	public OrderResponse createOrder(OrderCreateServiceRequest request, LocalDateTime registeredDateTime) {

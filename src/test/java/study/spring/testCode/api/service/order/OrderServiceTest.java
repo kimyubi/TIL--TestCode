@@ -1,7 +1,6 @@
 package study.spring.testCode.api.service.order;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static study.spring.testCode.domain.product.ProductSellingStatus.*;
 import static study.spring.testCode.domain.product.ProductType.*;
 
@@ -15,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import study.spring.testCode.OrderRepository;
-import study.spring.testCode.ProductRepository;
+import study.spring.testCode.domain.order.OrderRepository;
+import study.spring.testCode.domain.product.ProductRepository;
 import study.spring.testCode.api.controller.order.request.OrderCreateRequest;
 import study.spring.testCode.api.service.order.response.OrderResponse;
 import study.spring.testCode.domain.orderproduct.OrderProductRepository;

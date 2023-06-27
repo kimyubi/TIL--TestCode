@@ -18,7 +18,7 @@ public class Stock extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long id;
+	private Long id;
 
 	private String productNumber;
 

@@ -61,4 +61,7 @@ public class Order extends BaseEntity {
 			.sum();
 	}
 
+	public void CompletePayment() {
+		this.orderStatus = OrderStatus.PAYMENT_COMPLETED;
+	}
 }
