@@ -8,6 +8,7 @@
 ### 5. [TDD란 (2023-05-29)](#tdd란)
 ### 6. [문서로서의 테스트 코드 (2023-05-29)](#문서로서의-테스트-코드)
 ### 7. [Persistence Layer 테스트 (2023-06-01)](#persistence-layer-테스트)
+### 8. [Test Double, Stubbing (2023-06-27)](#test-double,-stubbing)
  
 <br>
 <br>
@@ -704,4 +705,39 @@ JPA 기반의 Persistence Layer를 테스트하는 데 사용된다.
 `@SpringBootTest`는 애플리케이션의 전체 컨텍스트를 로드하므로 테스트 수행 시간이
 오래 걸릴 수 있는 반면, @DataJpaTest는 필요한 최소한의 Bean들만 로드하므로 테스트 수행 시간이 더 짧을 수 있다.
 
+<br>
+<br>
+<br>
+<br>
 
+
+
+
+## ✅ test double, stubbing
+
+- `Dummy` : 아무 것도 하지 않는 깡통 객체  
+- `Fake` : 단순한 형태로 동일한 기능은 수행하나, 프로덕션에서 쓰기에는 부족한 객체  
+           (Ex: FakeRepository)  
+- **`Stub`** : 테스트에서 요청한 것에 대해 미리 준비한 결과를 제공하는 객체  
+  그 외에는 응답하지 않는다.  
+- **`Spy`** : Stub이면서, 호출된 내용을 기록하여 보여줄 수 있는 객체  
+  일부는 실제 객체처럼 동작시키고 일부만 Stubbing 할 수 있다.  
+- **`Mock`** : 행위에 대한 기대를 명세하고, 그에 따라 동작하도록 만들어진 객체  
+
+## 📌 Stub ? Mock?
+
+Stub →  상태 검증(State Verification)  
+
+Mock → 행위 검증(Behavior Verification)
+
+---
+<br>
+<br>
+
+우리 시스템이 아닌 외부 시스템을 사용하여 개발할 때, 외부 시스템은 잘 동작할 것이라는 가정 하에 테스트를 진행한다.  
+(⇒ 어차피 외부 시스템의 동작을 우리가 테스트할 수 없음. )  
+<br>
+<br>
+
+‼ 외부 시스템에서 진행되는 동작은 Mocking 처리한다.  
+![img_4.png](img_4.png))

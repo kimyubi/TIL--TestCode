@@ -4,10 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import study.spring.testCode.api.ApiResponse;
 import study.spring.testCode.domain.order.OrderRepository;
 import study.spring.testCode.api.service.mail.MailService;
 import study.spring.testCode.domain.order.Order;

@@ -2,6 +2,7 @@ package study.spring.testCode.api.service.order;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.*;
 import static study.spring.testCode.domain.product.ProductSellingStatus.*;
 import static study.spring.testCode.domain.product.ProductType.*;
@@ -102,8 +103,8 @@ class OrderStatisticServiceTest {
 		orderRepository.saveAll(List.of(order));
 
 		// stubbing
-		when(mailClient.sendEmail(any(String.class), any(String.class), any(String.class), any(String.class)))
-			.thenReturn(false);
+		given(mailClient.sendEmail(any(String.class), any(String.class), any(String.class), any(String.class)))
+			.willReturn(false);
 
 		// when
 		LocalDate requestedDate = requestedDateTime.toLocalDate().plusDays(1);
