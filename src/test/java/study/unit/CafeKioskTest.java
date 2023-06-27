@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -91,6 +92,7 @@ class CafeKioskTest {
 	// 주문 시간 범위 내에 해당 테스트를 실행하지 않는 경우, 테스트에 실패하게 된다.
 	// createOrder메서드는 테스트하기 어려운 코드
 	@Test
+	@Disabled
 	@DisplayName("테스트하기 어려운 영역을 분리하기 전의 테스트 코드")
 	void createOrder(){
 		CafeKiosk cafeKiosk = new CafeKiosk();

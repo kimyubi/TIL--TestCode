@@ -5,18 +5,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@DataJpaTest
-@ActiveProfiles("test")
-class StockRepositoryTest {
+import study.spring.testCode.IntegrationTestSupport;
+
+class StockRepositoryTest extends IntegrationTestSupport {
 
 	@Autowired
 	StockRepository stockRepository;
+
+	@AfterEach
+	void tearDown(){
+		stockRepository.deleteAllInBatch();
+	}
 
 	@DisplayName("상품 번호 리스트로 재고를 조회한다.")
 	@Test

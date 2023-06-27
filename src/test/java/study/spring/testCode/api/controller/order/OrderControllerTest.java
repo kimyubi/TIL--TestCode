@@ -11,31 +11,16 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import study.spring.testCode.ControllerTestSupport;
 import study.spring.testCode.api.controller.order.request.OrderCreateRequest;
-import study.spring.testCode.api.service.order.OrderService;
 import study.spring.testCode.api.service.order.response.OrderResponse;
 
-@WebMvcTest(controllers = OrderController.class)
-class OrderControllerTest {
-
-	@Autowired
-	private MockMvc mockMvc;
-
-	@Autowired
-	private ObjectMapper objectMapper;
-
-	@MockBean
-	private OrderService orderService;
+class OrderControllerTest extends ControllerTestSupport {
 
 	@PostMapping("/api/v1/orders/new")
 	public OrderResponse createOrder(@RequestBody OrderCreateRequest request){

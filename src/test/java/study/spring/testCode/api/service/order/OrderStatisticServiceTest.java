@@ -1,9 +1,7 @@
 package study.spring.testCode.api.service.order;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 import static study.spring.testCode.domain.product.ProductSellingStatus.*;
 import static study.spring.testCode.domain.product.ProductType.*;
 
@@ -15,11 +13,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 
-import study.spring.testCode.client.mail.MailClient;
+import study.spring.testCode.IntegrationTestSupport;
 import study.spring.testCode.domain.mail.MailSendHistoryRepository;
 import study.spring.testCode.domain.mail.MailSendHistroy;
 import study.spring.testCode.domain.order.Order;
@@ -29,9 +24,7 @@ import study.spring.testCode.domain.product.Product;
 import study.spring.testCode.domain.product.ProductRepository;
 import study.spring.testCode.domain.product.ProductType;
 
-@SpringBootTest
-@ActiveProfiles("test")
-class OrderStatisticServiceTest {
+class OrderStatisticServiceTest extends IntegrationTestSupport {
 
 	@Autowired
 	private OrderStatisticService orderStatisticService;
@@ -47,9 +40,6 @@ class OrderStatisticServiceTest {
 
 	@Autowired
 	private OrderProductRepository orderProductRepository;
-
-	@MockBean
-	private MailClient mailClient;
 
 	@AfterEach
 	void tearDown(){

@@ -22,9 +22,7 @@ import study.spring.testCode.domain.product.Product;
 import study.spring.testCode.domain.product.ProductRepository;
 import study.spring.testCode.domain.product.ProductType;
 
-@DataJpaTest
-@ActiveProfiles("test")
-class OrderRepositoryTest {
+class OrderRepositoryTest extends IntegrationTestSupport {
 
 	@Autowired
 	private OrderRepository orderRepository;

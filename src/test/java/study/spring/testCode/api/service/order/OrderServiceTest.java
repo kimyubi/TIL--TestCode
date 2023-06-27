@@ -11,22 +11,19 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
+import study.spring.testCode.IntegrationTestSupport;
 import study.spring.testCode.domain.order.OrderRepository;
+import study.spring.testCode.domain.orderproduct.OrderProductRepository;
 import study.spring.testCode.domain.product.ProductRepository;
 import study.spring.testCode.api.controller.order.request.OrderCreateRequest;
 import study.spring.testCode.api.service.order.response.OrderResponse;
-import study.spring.testCode.domain.orderproduct.OrderProductRepository;
 import study.spring.testCode.domain.product.Product;
 import study.spring.testCode.domain.product.ProductType;
 import study.spring.testCode.domain.stock.Stock;
 import study.spring.testCode.domain.stock.StockRepository;
 
-@SpringBootTest
-@ActiveProfiles("test")
-class OrderServiceTest {
+class OrderServiceTest extends IntegrationTestSupport {
 
 	@Autowired
 	private OrderService orderService;
